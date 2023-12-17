@@ -1,0 +1,71 @@
+
+#!/bin/bash
+#fucntion to pass the value to the metrics
+log() {
+	echo "$(date +"%Y-%m-%d %H:%M:%S") - $1" >> metrics.txt
+}
+# function to check the CPU
+check_cpu() {
+  cpu_threshold=90
+  cpu_usage=$(top -l 1 | awk '/CPU usage:/ {print int($3)}')
+  
+  if [ "$cpu_usage" -gt "$cpu_threshold" ]; then
+    log "High CPU usage: $cpu_usage%"
+  else
+    log "CPU usage within normal range: $cpu_usage%"
+  fi
+}
+
+# Function to check disk space
+check_disk() {
+  disk_threshold=90
+  disk_usage=$(df -H | awk '$NF=="/" {print int($5)}')
+  
+  if [ "$disk_usage" -gt "$disk_threshold" ]; then
+    log "High disk usage: $disk_usage%"
+  else
+    log "Disk usage within normal range: $disk_usage%"
+  fi
+}
+
+# Function to check memory usage
+check_memory(){
+  memory_threshold=50
+  memory_usage=$(top -l 1 | grep -E 'PhysMem:' | awk '{print int($2)}')
+
+  if [ "$memory_usage" -gt "$memory_threshold" ]; then
+    log "Memory is almost full: $memory_usage%"
+  else
+    log "Memory usage within normal range: $memory_usage%"
+  fi
+}
+# Function to check the number of processes
+processes_number() {
+    process_threshold=300
+    process_usage=$(top -l 1 | awk '/Processes:/ {print int($2)}')
+
+    if [ "$process_usage" -gt "$process_threshold" ]; then
+        log "There are too many processes running at this moment: $process_usage"
+    else
+        log "There are few processes running: $process_usage"
+    fi
+}
+
+#case statement
+
+echo "Please Select which system metrics whould like to check?"
+echo "1) Memory"
+echo "2) Disk"
+echo "3) CPU"
+echo "4) Processes"
+
+read input;
+
+case $input in
+	1) check_memory;;
+	2)check_disk;;
+	3)processes_number;;
+	4)check_cpu;;
+	*) echo " please choose number from 1 to 4 only"
+
+esac

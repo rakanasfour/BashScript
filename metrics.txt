@@ -1,0 +1,5 @@
+2023-12-17 13:55:03 - Memory usage within normal range: 0%
+2023-12-17 13:56:44 - Memory is almost full: 8181%
+2023-12-17 13:56:58 - Disk usage within normal range: 28%
+2023-12-17 13:57:09 - There are too many processes running at this moment: 533
+2023-12-17 13:57:23 - CPU usage within normal range: 9%
